@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UjianPintar - Platform Simulasi & Tryout Online</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="h-full text-slate-800 antialiased flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header id="main-header" class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('catalog')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-600 to-indigo-600 bg-clip-text text-transparent">UjianPintar</span>
+                    <span class="hidden sm:inline-block text-xs px-2 py-0.5 ml-2 bg-emerald-100 text-emerald-800 font-semibold rounded-full border border-emerald-200">MVP v1.0</span>
+                </div>
+            </div>
+
+            <!-- Header Menu Nav -->
+            <nav id="nav-links" class="hidden md:flex items-center space-x-1 font-medium text-sm">
+                <button onclick="navigateTo('catalog')" id="nav-catalog" class="px-3 py-2 rounded-lg text-slate-700 hover:text-brand-600 hover:bg-slate-100 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-slate-400"></i> Daftar Ujian
+                </button>
+                <button onclick="navigateTo('creator')" id="nav-creator" class="px-3 py-2 rounded-lg text-slate-700 hover:text-brand-600 hover:bg-slate-100 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-slate-400"></i> Buat Ujian Baru
+                </button>
+                <button onclick="navigateTo('monetization')" id="nav-monetization" class="px-3 py-2 rounded-lg text-slate-700 hover:text-brand-600 hover:bg-slate-100 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-gem text-amber-500"></i> Paket & Monetisasi
+                </button>
+            </nav>
+
+            <!-- User Balance & Profile Simulation -->
+            <div class="flex items-center space-x-3">
+                <div id="user-token-badge" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold rounded-full shadow-sm cursor-pointer" onclick="navigateTo('monetization')">
+                    <i class="fa-solid fa-coins text-amber-500"></i>
+                    <span><strong id="user-tokens">50</strong> Koin Tryout</span>
+                </div>
+                <button onclick="navigateTo('monetization')" class="bg-gradient-to-r from-brand-600 to-indigo-600 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg shadow hover:opacity-90 transition-opacity">
+                    <i class="fa-solid fa-crown mr-1.5 text-amber-300"></i> Upgrade Pro
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- VIEW 1: CATALOG PAGE -->
+        <section id="view-catalog" class="space-y-6">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-brand-700 via-brand-600 to-indigo-700 rounded-2xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-laptop-code text-9xl"></i>
+                </div>
+                <div class="max-w-2xl relative z-10 space-y-3">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-brand-500/30 backdrop-blur border border-white/20 text-brand-100">
+                        <i class="fa-solid fa-bolt mr-1.5 text-amber-300"></i> Platform Simulasi Terlengkap
+                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">Uji Kemampuanmu Sebelum Ujian Asli Dimulai!</h1>
+                    <p class="text-brand-100 text-sm sm:text-base leading-relaxed">Simulasi ujian dengan sistem timer standar nasional, pembahasan instan, serta penilaian skor transparan.</p>
+                </div>
+            </div>
+
+            <!-- Filters and Search Bar -->
+            <div class="flex flex-col sm:flex-row justify-between gap-4 items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="relative w-full sm:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                    <input type="text" id="search-input" onkeyup="filterExams()" placeholder="Cari simulasi ujian..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                </div>
+                <!-- Category Badges -->
+                <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 custom-scrollbar" id="category-filters">
+                    <button onclick="filterCategory('ALL')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white shadow-sm transition-all" data-cat="ALL">Semua</button>
+                    <button onclick="filterCategory('CPNS')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-cat="CPNS">CPNS / SKD</button>
+                    <button onclick="filterCategory('UTBK')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-cat="UTBK">UTBK SNBT</button>
+                    <button onclick="filterCategory('CODING')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-cat="CODING">Programming</button>
+                    <button onclick="filterCategory('TOEFL')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-cat="TOEFL">Bahasa Inggris</button>
+                </div>
+            </div>
+
+            <!-- Exam Cards Grid Container -->
+            <div id="exam-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- VIEW 2: EXAM TAKING INTERFACE (Focus Mode) -->
+        <section id="view-exam" class="hidden space-y-4">
+            <!-- Exam Status Bar -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-brand-50 border border-brand-200 flex items-center justify-center text-brand-600 font-bold">
+                        <i class="fa-solid fa-file-pen"></i>
+                    </div>
+                    <div>
+                        <h2 id="active-exam-title" class="font-bold text-slate-800 text-base leading-snug">Nama Simulasi Ujian</h2>
+                        <p class="text-xs text-slate-500" id="active-exam-meta">20 Soal • Passing Grade: 70%</p>
+                    </div>
+                </div>
+
+                <!-- Timer & Actions -->
+                <div class="flex items-center gap-4 w-full md:w-auto justify-between">
+                    <div id="timer-box" class="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 font-mono font-bold text-lg flex items-center gap-2 shadow-inner">
+                        <i class="fa-regular fa-clock animate-pulse text-emerald-600"></i>
+                        <span id="timer-display">00:00:00</span>
+                    </div>
+                    <button onclick="openSubmitModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-bold shadow transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Selesai & Submit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Layout: Question Left, Navigation Right -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Question Column (8 Cols) -->
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm min-h-[420px] flex flex-col justify-between space-y-6">
+                        <div class="space-y-4">
+                            <!-- Question Header Indicator -->
+                            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                                <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-1 rounded border border-brand-100">
+                                    Soal Nomor <span id="q-num-display">1</span>
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium" id="q-category-tag">Kategori Soal</span>
+                            </div>
+
+                            <!-- Question Text -->
+                            <div id="q-text-display" class="text-slate-800 font-medium text-base leading-relaxed">
+                                Loading soal...
+                            </div>
+
+                            <!-- Question Image Placeholder (if any) -->
+                            <div id="q-image-container" class="hidden">
+                                <img id="q-image" src="" alt="Soal Illustration" class="max-h-60 rounded-lg border border-slate-200 object-contain">
+                            </div>
+
+                            <!-- Options List -->
+                            <div id="q-options-container" class="space-y-3 pt-2">
+                                <!-- Options rendered via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Question Bottom Action Nav -->
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                            <button id="btn-prev-q" onclick="navigateQuestion(-1)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-arrow-left"></i> Sebelumnya
+                            </button>
+
+                            <button id="btn-flag-q" onclick="toggleFlagQuestion()" class="px-4 py-2 border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2">
+                                <i class="fa-regular fa-flag text-amber-600" id="flag-icon"></i> <span id="flag-text">Ragu-ragu</span>
+                            </button>
+
+                            <button id="btn-next-q" onclick="navigateQuestion(1)" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-sm font-semibold transition-colors flex items-center gap-2">
+                                Selanjutnya <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Sidebar Column (4 Cols) -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+                            <span>Navigasi Soal</span>
+                            <span class="text-xs font-normal text-slate-500" id="answered-count-badge">0 / 0 Terjawab</span>
+                        </h3>
+
+                        <!-- Question Grid -->
+                        <div id="question-grid" class="grid grid-cols-5 gap-2 max-h-80 overflow-y-auto custom-scrollbar p-1">
+                            <!-- Grid items generated by JS -->
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="pt-3 border-t border-slate-100 text-xs grid grid-cols-2 gap-2 text-slate-600">
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-slate-100 border border-slate-300"></span> Belum dijawab</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-brand-600 text-white"></span> Sudah dijawab</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-amber-400 text-white"></span> Ragu-ragu</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded ring-2 ring-brand-500 bg-slate-50"></span> Soal Aktif</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: RESULT & PERFORMANCE ANALYTICS -->
+        <section id="view-result" class="hidden space-y-6">
+            <!-- Score Header Banner -->
+            <div id="result-status-card" class="bg-white border rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span id="result-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        Lulus Simulasi
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900" id="result-title">Hasil Tryout UTBK SNBT 2026</h2>
+                    <p class="text-slate-500 text-sm" id="result-subtitle">Diselesaikan pada <span id="result-timestamp">Hari ini</span></p>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <div class="text-center bg-slate-50 px-6 py-4 rounded-xl border border-slate-200">
+                        <span class="block text-xs uppercase font-semibold text-slate-400">Nilai Akhir</span>
+                        <span id="result-score-text" class="text-4xl font-extrabold text-brand-600">85</span>
+                        <span class="text-xs text-slate-500">/ 100</span>
+                    </div>
+                    <div class="text-center bg-slate-50 px-6 py-4 rounded-xl border border-slate-200">
+                        <span class="block text-xs uppercase font-semibold text-slate-400">Akurasi Soal</span>
+                        <span id="result-accuracy-text" class="text-4xl font-extrabold text-emerald-600">85%</span>
+                        <span class="text-xs text-slate-500">Jawaban Benar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats & Chart Overview -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Breakdown Metric Cards -->
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 font-medium">Jawaban Benar</p>
+                                <p class="text-lg font-bold text-slate-800" id="stat-correct">17 Soal</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded" id="stat-correct-p">85%</span>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 font-medium">Jawaban Salah</p>
+                                <p class="text-lg font-bold text-slate-800" id="stat-wrong">3 Soal</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-1 rounded" id="stat-wrong-p">15%</span>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-minus"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 font-medium">Kosong / Ragu</p>
+                                <p class="text-lg font-bold text-slate-800" id="stat-unanswered">0 Soal</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-1 rounded" id="stat-unanswered-p">0%</span>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400 font-medium">Waktu Pengerjaan</p>
+                                <p class="text-lg font-bold text-slate-800" id="stat-time-used">14m 20s</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Chart Canvas -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <h3 class="font-bold text-slate-800 text-sm mb-2">Visualisasi Ringkasan Performa</h3>
+                    <div class="h-64 relative flex items-center justify-center">
+                        <canvas id="result-chart"></canvas>
+                    </div>
+                    <div class="flex justify-center gap-4 pt-4 text-xs font-medium text-slate-500 border-t border-slate-100">
+                        <button onclick="navigateTo('catalog')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> Ujian Lainnya
+                        </button>
+                        <button onclick="retryCurrentExam()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg transition-colors font-semibold">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Coba Lagi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg">Pembahasan Lengkap & Kunci Jawaban</h3>
+                        <p class="text-xs text-slate-500">Evaluasi jawaban kamu untuk meningkatkan pemahaman materi.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="filterReview('ALL')" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white" data-review="ALL">Semua</button>
+                        <button onclick="filterReview('WRONG')" class="review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600" data-review="WRONG">Salah Saja</button>
+                    </div>
+                </div>
+
+                <!-- Review Container -->
+                <div id="review-items-container" class="space-y-6">
+                    <!-- Dynamic review cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: QUESTION BANK CREATOR (FOR TEACHERS/ADMINS) -->
+        <section id="view-creator" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 max-w-4xl mx-auto">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Buat Paket Tryout / Bank Soal Baru</h2>
+                    <p class="text-sm text-slate-500">Tambahkan modul latihan atau ujian khusus untuk siswa atau keperluan pribadi.</p>
+                </div>
+
+                <form id="create-exam-form" onsubmit="handleCreateExam(event)" class="space-y-6">
+                    <!-- Meta info -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700">Judul Ujian</label>
+                            <input type="text" id="new-title" required placeholder="Contoh: Tryout Mandiri Fisika Dasar" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700">Kategori</label>
+                            <select id="new-category" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="CPNS">CPNS / SKD</option>
+                                <option value="UTBK">UTBK SNBT</option>
+                                <option value="CODING">Programming</option>
+                                <option value="TOEFL">Bahasa Inggris</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700">Durasi (Menit)</label>
+                            <input type="number" id="new-duration" min="1" max="180" value="15" required class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700">Harga Akses</label>
+                            <select id="new-price" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                                <option value="Gratis">Gratis</option>
+                                <option value="10 Koin">10 Koin Tryout</option>
+                                <option value="Premium">Khusus Member Pro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Question Input Section -->
+                    <div class="border-t border-slate-100 pt-4 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex justify-between items-center">
+                            <span>Daftar Pertanyaan</span>
+                            <button type="button" onclick="addQuestionField()" class="text-xs font-semibold px-3 py-1.5 bg-brand-50 text-brand-600 rounded-lg border border-brand-200 hover:bg-brand-100 transition-colors">
+                                <i class="fa-solid fa-plus mr-1"></i> Tambah Soal
+                            </button>
+                        </h3>
+
+                        <div id="creator-questions-list" class="space-y-4">
+                            <!-- Question Builder Cards inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                        <button type="button" onclick="navigateTo('catalog')" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-colors">Batal</button>
+                        <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-brand-600 to-indigo-600 hover:opacity-95 text-white font-semibold rounded-xl text-sm shadow transition-opacity">Simpan & Publikasikan</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- VIEW 5: MONETIZATION STRATEGY & SUBSCRIPTION PACKAGES -->
+        <section id="view-monetization" class="hidden space-y-8 max-w-5xl mx-auto">
+            <div class="text-center space-y-3">
+                <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full border border-amber-200 uppercase tracking-wide">Model Bisnis & Monetisasi</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Pilih Paket Langganan Tryout</h2>
+                <p class="text-slate-600 text-sm max-w-xl mx-auto">Tingkatkan peluang lulus ujian nasional dengan akses bank soal HOTS eksklusif dan pembahasan video mendalam.</p>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Free Tier -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-6 relative">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-slate-800 text-xl">Paket Gratis</h3>
+                        <p class="text-slate-500 text-xs">Cocok untuk latihan awal dan pengenalan format ujian.</p>
+                        <div class="text-3xl font-extrabold text-slate-900">Rp 0 <span class="text-xs font-normal text-slate-500">/ selamanya</span></div>
+
+                        <ul class="space-y-2.5 text-xs text-slate-600 pt-4 border-t border-slate-100">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Akses 3 Tryout Standar</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Timer Real-time</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Pembahasan Teks Singkat</li>
+                            <li class="flex items-center gap-2 text-slate-400"><i class="fa-solid fa-xmark text-slate-300"></i> Tanpa Analisis Performa Detail</li>
+                        </ul>
+                    </div>
+                    <button onclick="simulateSelectPlan('Gratis')" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors">Gunakan Sekarang</button>
+                </div>
+
+                <!-- Pro Monthly (Popular) -->
+                <div class="bg-gradient-to-b from-brand-900 to-slate-900 text-white rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6 relative border-2 border-brand-500">
+                    <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-900 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow">Paling Populer</div>
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-amber-400 text-xl">Pro Monthly</h3>
+                        <p class="text-slate-300 text-xs">Akses penuh ke seluruh bank soal CPNS, UTBK, & Sertifikasi.</p>
+                        <div class="text-3xl font-extrabold text-white">Rp 49.000 <span class="text-xs font-normal text-slate-400">/ bulan</span></div>
+
+                        <ul class="space-y-2.5 text-xs text-slate-200 pt-4 border-t border-slate-700">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Akses Unlimted Semua Tryout</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Soal HOTS Terupdate 2026</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Pembahasan Langkah demi Langkah</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Grafik & Analisis Kelemahan Materi</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Fitur Buat Tryout Mandiri</li>
+                        </ul>
+                    </div>
+                    <button onclick="simulatePaymentModal('Pro Monthly', 49000)" class="w-full py-2.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold text-xs rounded-xl shadow transition-colors">Langganan Sekarang</button>
+                </div>
+
+                <!-- Coin Package (Pay-per-tryout) -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-6 relative">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-slate-800 text-xl">Paket Token Koin</h3>
+                        <p class="text-slate-500 text-xs">Bayar hanya untuk tryout khusus yang kamu butuhkan saja.</p>
+                        <div class="text-3xl font-extrabold text-slate-900">Rp 15.000 <span class="text-xs font-normal text-slate-500">/ 50 Koin</span></div>
+
+                        <ul class="space-y-2.5 text-xs text-slate-600 pt-4 border-t border-slate-100">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> 1 Tryout Premium = 10 Koin</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Koin Tanpa Kadaluarsa</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Cocok untuk Ujian Spesifik</li>
+                        </ul>
+                    </div>
+                    <button onclick="simulatePaymentModal('50 Koin Tryout', 15000)" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition-colors">Beli Koin</button>
+                </div>
+            </div>
+
+            <!-- Monetization Strategy Breakdown Explanation for Owner -->
+            <div class="bg-slate-900 text-slate-200 p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-4">
+                <div class="flex items-center gap-3 text-amber-400">
+                    <i class="fa-solid fa-lightbulb text-xl"></i>
+                    <h3 class="font-bold text-lg text-white">Panduan Strategi Monetisasi Website Ini</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300 leading-relaxed">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-white text-sm">1. Sistem B2C (Langganan & Pay-Per-Test)</h4>
+                        <p>Siswa membeli token/koin via Payment Gateway (seperti Midtrans/Xendit) untuk membuka Tryout Nasional CPNS atau UTBK. Model langganan bulanan memberikan recurring income.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-white text-sm">2. Sistem B2B (Kemitraan Bimbel & Sekolah)</h4>
+                        <p>Sekolah atau Bimbingan Belajar menyewa platform ini (SaaS white-label) untuk mengadakan ujian online bagi siswa mereka menggunakan fitur "Buat Ujian Baru".</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODALS SECTION -->
+    <!-- Submit Confirmation Modal -->
+    <div id="modal-submit" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-slate-100">
+            <div class="flex items-center gap-3 text-amber-600">
+                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-circle-question text-lg"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Konfirmasi Selesai Ujian</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed" id="submit-modal-msg">
+                Apakah Anda yakin ingin mengakhiri simulasi ujian ini? Jawaban Anda akan langsung dihitung.
+            </p>
+            <div id="unanswered-alert-box" class="hidden bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-800">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Perhatian: Masih terdapat <strong id="unanswered-modal-count">0</strong> soal yang belum Anda jawab atau masih ragu-ragu.
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeSubmitModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-sm transition-colors">Lanjutkan Mengerjakan</button>
+                <button onclick="processExamSubmit()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-sm shadow transition-colors">Selesai & Lihat Hasil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Out Auto Submit Modal -->
+    <div id="modal-timeout" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-center border border-slate-100">
+            <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-hourglass-end animate-bounce"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-slate-900">Waktu Ujian Telah Habis!</h3>
+            <p class="text-sm text-slate-600">Sistem secara otomatis mengumpulkan jawaban akhir Anda.</p>
+            <button onclick="processExamSubmit()" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow transition-colors">
+                Lihat Hasil Sekarang
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Simulation Modal -->
+    <div id="modal-payment" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-slate-100">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-900 text-base" id="pay-modal-title">Pembelian Paket Tryout</h3>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-sm text-slate-800" id="pay-item-name">Pro Monthly</p>
+                        <p class="text-xs text-slate-500">Akses Tanpa Batas 30 Hari</p>
+                    </div>
+                    <span class="font-extrabold text-brand-600 text-base" id="pay-item-price">Rp 49.000</span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-700">Pilih Metode Pembayaran (Simulasi)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="selectPayMethod('QRIS')" class="pay-method-btn p-3 border rounded-xl text-xs font-semibold text-slate-700 hover:border-brand-500 flex items-center gap-2 border-brand-500 bg-brand-50">
+                            <i class="fa-solid fa-qrcode text-brand-600"></i> QRIS Instant
+                        </button>
+                        <button type="button" onclick="selectPayMethod('E-Wallet')" class="pay-method-btn p-3 border rounded-xl text-xs font-semibold text-slate-700 hover:border-brand-500 flex items-center gap-2">
+                            <i class="fa-solid fa-wallet"></i> GoPay / OVO
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button onclick="confirmSimulatedPayment()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock"></i> Konfirmasi Bayar & Aktifkan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Global Application State & Initial Mock Exam Data
+        let appState = {
+            currentView: 'catalog',
+            activeCategory: 'ALL',
+            activeExam: null,
+            currentQuestionIndex: 0,
+            userAnswers: {}, // { questionId: selectedOptionIndex }
+            flaggedQuestions: {}, // { questionId: boolean }
+            timerInterval: null,
+            timeRemaining: 0,
+            timeSpentSeconds: 0,
+            timeStart: null,
+            userTokens: 50,
+            examsList: []
+        };
+
+        // Preset Initial Question Banks (HOTS Questions)
+        const initialExamData = [
+            {
+                id: 'exam-cpns-1',
+                title: 'Tryout SKD CPNS 2026 - Kemampuan Verbal & Logika',
+                category: 'CPNS',
+                durationMinutes: 15,
+                price: 'Gratis',
+                description: 'Latihan soal Tes Inteligensia Umum (TIU) CPNS standar PermenPAN-RB terbaru.',
+                questions: [
+                    {
+                        id: 'q1',
+                        text: 'PILIHAN KATA (ANALOGI): Mobil : Bensin = Manusia : ...',
+                        options: ['Oksigen', 'Makanan', 'Jantung', 'Lari'],
+                        correctIndex: 1,
+                        explanation: 'Bensin adalah sumber energi utama agar mobil dapat berjalan, sebagaimana makanan adalah sumber energi utama agar manusia dapat beraktivitas.'
+                    },
+                    {
+                        id: 'q2',
+                        text: 'Jika semua siswa rajin belajar maka mereka lulus ujian. Sebagian siswa yang lulus ujian mendapatkan beasiswa. Kesimpulan yang sah adalah...',
+                        options: [
+                            'Semua siswa yang rajin belajar mendapat beasiswa',
+                            'Sebagian siswa yang rajin belajar mendapatkan beasiswa',
+                            'Siswa yang tidak rajin belajar tidak bisa mendapat beasiswa',
+                            'Tidak ada siswa rajin yang gagal ujian'
+                        ],
+                        correctIndex: 1,
+                        explanation: 'Syllogism: Karena semua siswa rajin pasti lulus, dan sebagian yang lulus dapat beasiswa, maka sebagian siswa yang rajin belajar mendapatkan beasiswa.'
+                    },
+                    {
+                        id: 'q3',
+                        text: 'ANTONIM: DEDUKSI = ...',
+                        options: ['Induksi', 'Reduksi', 'Koreksi', 'Konstruksi'],
+                        correctIndex: 0,
+                        explanation: 'Deduksi adalah penarikan kesimpulan dari umum ke khusus. Lawan katanya (antonim) adalah Induksi (dari khusus ke umum).'
+                    }
+                ]
+            },
+            {
+                id: 'exam-utbk-1',
+                title: 'Tryout UTBK-SNBT 2026 - Tes Potensi Skolastik (TPS)',
+                category: 'UTBK',
+                durationMinutes: 20,
+                price: '10 Koin',
+                description: 'Simulasi Penalaran Umum & Pemahaman Bacaan tingkat lanjut HOTS.',
+                questions: [
+                    {
+                        id: 'q10',
+                        text: 'Sebuah toko memberikan diskon beruntun 20% kemudian diskon lagi 10%. Berapakah total diskon efektif yang didapatkan pembeli?',
+                        options: ['30%', '28%', '25%', '22%'],
+                        correctIndex: 1,
+                        explanation: 'Misal harga awal = 100. Diskon pertama 20% -> 80. Diskon kedua 10% dari 80 -> 8. Harga akhir = 72. Total diskon = 100 - 72 = 28%.'
+                    },
+                    {
+                        id: 'q11',
+                        text: 'Di bawah ini manakah kalimat yang memenuhi kaidah Ejaan Bahasa Indonesia (EBI) yang baku?',
+                        options: [
+                            'Aktivitas di apotik tersebut sangat padat.',
+                            'Aktivitas di apotek tersebut sangat padat.',
+                            'Aktifitas di apotek tersebut sangat padat.',
+                            'Aktifitas di apotik tersebut sangat padat.'
+                        ],
+                        correctIndex: 1,
+                        explanation: 'Kata baku yang benar menurut KBBI adalah "Aktivitas" (dengan huruf v) dan "Apotek" (dengan huruf e).'
+                    }
+                ]
+            },
+            {
+                id: 'exam-coding-1',
+                title: 'Kuis Pemrograman Web - HTML, CSS & JavaScript',
+                category: 'CODING',
+                durationMinutes: 10,
+                price: 'Gratis',
+                description: 'Uji pemahaman dasar sintaksis web development front-end modern.',
+                questions: [
+                    {
+                        id: 'q20',
+                        text: 'Manakah dari metode JavaScript berikut yang digunakan untuk mengubah string JSON menjadi Objek JavaScript?',
+                        options: ['JSON.stringify()', 'JSON.parse()', 'JSON.toObject()', 'Object.fromJSON()'],
+                        correctIndex: 1,
+                        explanation: '`JSON.parse()` mengonversi string format JSON menjadi objek JavaScript executable.'
+                    },
+                    {
+                        id: 'q21',
+                        text: 'Properti CSS manakah yang digunakan untuk membuat layout responsif fleksibel satu dimensi?',
+                        options: ['display: grid', 'display: flex', 'display: inline-block', 'float: left'],
+                        correctIndex: 1,
+                        explanation: '`display: flex` (Flexbox) dirancang khusus untuk tata letak 1 dimensi (baris atau kolom).'
+                    }
+                ]
+            }
+        ];
+
+        // Initialize App on DOM Load
+        window.onload = function() {
+            initStorageData();
+            renderExamCards();
+            setupCreatorField();
+        };
+
+        function initStorageData() {
+            const stored = localStorage.getItem('ujian_pintar_exams');
+            if (stored) {
+                try {
+                    appState.examsList = JSON.parse(stored);
+                } catch(e) {
+                    appState.examsList = initialExamData;
+                }
+            } else {
+                appState.examsList = initialExamData;
+                localStorage.setItem('ujian_pintar_exams', JSON.stringify(initialExamData));
+            }
+        }
+
+        // Navigation Logic
+        function navigateTo(viewName) {
+            appState.currentView = viewName;
+
+            // Hide all view sections
+            document.querySelectorAll('main > section').forEach(el => el.classList.add('hidden'));
+
+            // Show selected view
+            const targetView = document.getElementById(`view-${viewName}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Catalog Cards
+        function renderExamCards() {
+            const container = document.getElementById('exam-cards-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const filteredExams = appState.examsList.filter(exam => {
+                const matchCat = appState.activeCategory === 'ALL' || exam.category === appState.activeCategory;
+                const searchKey = document.getElementById('search-input')?.value.toLowerCase() || '';
+                const matchSearch = exam.title.toLowerCase().includes(searchKey) || exam.description.toLowerCase().includes(searchKey);
+                return matchCat && matchSearch;
+            });
+
+            if (filteredExams.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-8 space-y-3">
+                        <i class="fa-solid fa-folder-open text-4xl text-slate-300"></i>
+                        <p class="text-slate-600 font-semibold text-sm">Tidak ditemukan simulasi ujian yang cocok.</p>
+                        <button onclick="filterCategory('ALL')" class="text-xs text-brand-600 font-bold hover:underline">Tampilkan Semua Ujian</button>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredExams.forEach(exam => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col justify-between space-y-4";
+                
+                const badgeColor = exam.price === 'Gratis' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] uppercase font-extrabold px-2.5 py-1 rounded-md bg-slate-100 text-slate-600">${exam.category}</span>
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor}">${exam.price}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base leading-snug line-clamp-2">${exam.title}</h3>
+                        <p class="text-xs text-slate-500 line-clamp-2">${exam.description}</p>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <span><i class="fa-regular fa-clock mr-1"></i>${exam.durationMinutes} Menit</span>
+                        <span><i class="fa-solid fa-list-check mr-1"></i>${exam.questions.length} Soal</span>
+                        <button onclick="startExam('${exam.id}')" class="px-3.5 py-1.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg shadow-sm transition-colors text-xs">
+                            Mulai <i class="fa-solid fa-play ml-1"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            appState.activeCategory = category;
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                if (btn.dataset.cat === category) {
+                    btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white shadow-sm transition-all";
+                } else {
+                    btn.className = "cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all";
+                }
+            });
+            renderExamCards();
+        }
+
+        function filterExams() {
+            renderExamCards();
+        }
+
+        // Start Exam Engine
+        function startExam(examId) {
+            const exam = appState.examsList.find(e => e.id === examId);
+            if (!exam) return;
+
+            // Coin check simulation
+            if (exam.price !== 'Gratis' && appState.userTokens < 10) {
+                navigateTo('monetization');
+                return;
+            }
+
+            appState.activeExam = exam;
+            appState.currentQuestionIndex = 0;
+            appState.userAnswers = {};
+            appState.flaggedQuestions = {};
+            appState.timeRemaining = exam.durationMinutes * 60;
+            appState.timeStart = new Date();
+
+            // Setup Header Elements
+            document.getElementById('active-exam-title').innerText = exam.title;
+            document.getElementById('active-exam-meta').innerText = `${exam.questions.length} Soal • Kategori ${exam.category}`;
+
+            // Initialize Exam Screen
+            navigateTo('exam');
+            renderQuestion();
+            renderQuestionGrid();
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(appState.timerInterval);
+            updateTimerDisplay();
+
+            appState.timerInterval = setInterval(() => {
+                appState.timeRemaining--;
+                updateTimerDisplay();
+
+                if (appState.timeRemaining <= 0) {
+                    clearInterval(appState.timerInterval);
+                    document.getElementById('modal-timeout').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(appState.timeRemaining / 3600);
+            const minutes = Math.floor((appState.timeRemaining % 3600) / 60);
+            const seconds = appState.timeRemaining % 60;
+
+            const formatted = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            const display = document.getElementById('timer-display');
+            if (display) display.innerText = formatted;
+
+            // Timer visual warning
+            const timerBox = document.getElementById('timer-box');
+            if (appState.timeRemaining < 180) { // < 3 mins
+                timerBox.className = "px-4 py-2 bg-rose-50 border border-rose-300 rounded-xl text-rose-700 font-mono font-bold text-lg flex items-center gap-2 animate-pulse shadow-inner";
+            } else {
+                timerBox.className = "px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 font-mono font-bold text-lg flex items-center gap-2 shadow-inner";
+            }
+        }
+
+        // Render Active Question
+        function renderQuestion() {
+            const exam = appState.activeExam;
+            const q = exam.questions[appState.currentQuestionIndex];
+
+            document.getElementById('q-num-display').innerText = appState.currentQuestionIndex + 1;
+            document.getElementById('q-category-tag').innerText = exam.category;
+            document.getElementById('q-text-display').innerText = q.text;
+
+            // Options List Rendering
+            const optionsBox = document.getElementById('q-options-container');
+            optionsBox.innerHTML = '';
+
+            const activeAnswer = appState.userAnswers[q.id];
+
+            q.options.forEach((optText, idx) => {
+                const optLetter = String.fromCharCode(65 + idx); // A, B, C, D
+                const isSelected = activeAnswer === idx;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectOption(q.id, idx);
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 text-sm ${
+                    isSelected 
+                    ? 'border-brand-600 bg-brand-50 text-brand-900 font-semibold ring-2 ring-brand-500/20' 
+                    : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
+                }`;
+
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 ${
+                        isSelected ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-500'
+                    }">${optLetter}</span>
+                    <span class="leading-relaxed mt-0.5">${optText}</span>
+                `;
+                optionsBox.appendChild(btn);
+            });
+
+            // Update Flag Button State
+            const isFlagged = appState.flaggedQuestions[q.id];
+            const flagText = document.getElementById('flag-text');
+            const flagIcon = document.getElementById('flag-icon');
+
+            if (isFlagged) {
+                flagText.innerText = 'Ragu-ragu (Aktif)';
+                flagIcon.className = 'fa-solid fa-flag text-amber-600';
+            } else {
+                flagText.innerText = 'Ragu-ragu';
+                flagIcon.className = 'fa-regular fa-flag text-amber-600';
+            }
+
+            // Disable/Enable Nav Buttons
+            document.getElementById('btn-prev-q').disabled = appState.currentQuestionIndex === 0;
+            document.getElementById('btn-next-q').disabled = appState.currentQuestionIndex === exam.questions.length - 1;
+        }
+
+        function selectOption(qId, optionIdx) {
+            appState.userAnswers[qId] = optionIdx;
+            renderQuestion();
+            renderQuestionGrid();
+        }
+
+        function toggleFlagQuestion() {
+            const q = appState.activeExam.questions[appState.currentQuestionIndex];
+            appState.flaggedQuestions[q.id] = !appState.flaggedQuestions[q.id];
+            renderQuestion();
+            renderQuestionGrid();
+        }
+
+        function navigateQuestion(delta) {
+            const newIndex = appState.currentQuestionIndex + delta;
+            if (newIndex >= 0 && newIndex < appState.activeExam.questions.length) {
+                appState.currentQuestionIndex = newIndex;
+                renderQuestion();
+                renderQuestionGrid();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            appState.currentQuestionIndex = index;
+            renderQuestion();
+            renderQuestionGrid();
+        }
+
+        // Render Question Grid Buttons
+        function renderQuestionGrid() {
+            const grid = document.getElementById('question-grid');
+            if (!grid || !appState.activeExam) return;
+
+            grid.innerHTML = '';
+            let answeredCount = 0;
+
+            appState.activeExam.questions.forEach((q, idx) => {
+                const isCurrent = idx === appState.currentQuestionIndex;
+                const isAnswered = appState.userAnswers[q.id] !== undefined;
+                const isFlagged = appState.flaggedQuestions[q.id];
+
+                if (isAnswered) answeredCount++;
+
+                let bgClass = "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200";
+                if (isFlagged) {
+                    bgClass = "bg-amber-400 border-amber-500 text-slate-900 font-bold";
+                } else if (isAnswered) {
+                    bgClass = "bg-brand-600 border-brand-700 text-white font-bold";
+                }
+
+                if (isCurrent) {
+                    bgClass += " ring-2 ring-offset-1 ring-brand-500";
+                }
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => jumpToQuestion(idx);
+                btn.className = `w-full h-10 rounded-lg border text-xs flex items-center justify-center transition-all ${bgClass}`;
+                btn.innerText = idx + 1;
+
+                grid.appendChild(btn);
+            });
+
+            document.getElementById('answered-count-badge').innerText = `${answeredCount} / ${appState.activeExam.questions.length} Terjawab`;
+        }
+
+        function openSubmitModal() {
+            const totalQ = appState.activeExam.questions.length;
+            const answeredQ = Object.keys(appState.userAnswers).length;
+            const unanswered = totalQ - answeredQ;
+
+            const alertBox = document.getElementById('unanswered-alert-box');
+            if (unanswered > 0) {
+                alertBox.classList.remove('hidden');
+                document.getElementById('unanswered-modal-count').innerText = unanswered;
+            } else {
+                alertBox.classList.add('hidden');
+            }
+
+            document.getElementById('modal-submit').classList.remove('hidden');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('modal-submit').classList.add('hidden');
+        }
+
+        // Process Exam Submission & Compute Analytics
+        function processExamSubmit() {
+            clearInterval(appState.timerInterval);
+
+            // Hide modals
+            const modalSubmit = document.getElementById('modal-submit');
+            const modalTimeout = document.getElementById('modal-timeout');
+            if (modalSubmit) modalSubmit.classList.add('hidden');
+            if (modalTimeout) modalTimeout.classList.add('hidden');
+
+            const exam = appState.activeExam;
+            if (!exam) return;
+
+            let correctCount = 0;
+            let wrongCount = 0;
+            let unansweredCount = 0;
+
+            exam.questions.forEach(q => {
+                const userAns = appState.userAnswers[q.id];
+                if (userAns === undefined) {
+                    unansweredCount++;
+                } else if (userAns === q.correctIndex) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            });
+
+            const total = exam.questions.length || 1;
+            const scorePercentage = Math.round((correctCount / total) * 100);
+            const isPassed = scorePercentage >= 70;
+
+            // Helper for safe element innerText setting
+            const setElemText = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = text;
+            };
+
+            // Render Result Card Header
+            setElemText('result-title', `Hasil ${exam.title}`);
+            setElemText('result-score-text', scorePercentage);
+            setElemText('result-accuracy-text', `${scorePercentage}%`);
+            setElemText('result-timestamp', new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }));
+
+            const badge = document.getElementById('result-badge');
+            if (badge) {
+                if (isPassed) {
+                    badge.innerText = "Lulus Simulasi";
+                    badge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200";
+                } else {
+                    badge.innerText = "Perlu Belajar Lagi";
+                    badge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200";
+                }
+            }
+
+            // Stat Numbers
+            setElemText('stat-correct', `${correctCount} Soal`);
+            setElemText('stat-correct-p', `${Math.round((correctCount/total)*100)}%`);
+
+            setElemText('stat-wrong', `${wrongCount} Soal`);
+            setElemText('stat-wrong-p', `${Math.round((wrongCount/total)*100)}%`);
+
+            setElemText('stat-unanswered', `${unansweredCount} Soal`);
+            setElemText('stat-unanswered-p', `${Math.round((unansweredCount/total)*100)}%`);
+
+            // Compute Time Spent
+            const totalDurationSec = exam.durationMinutes * 60;
+            const timeUsedSec = totalDurationSec - appState.timeRemaining;
+            const mins = Math.floor(timeUsedSec / 60);
+            const secs = timeUsedSec % 60;
+            setElemText('stat-time-used', `${mins}m ${secs}s`);
+
+            // Render Visual Chart
+            renderChart(correctCount, wrongCount, unansweredCount);
+
+            // Render Review Items
+            renderReviewItems('ALL');
+
+            // Switch to result screen
+            navigateTo('result');
+        }
+
+        let resultChartInstance = null;
+        function renderChart(correct, wrong, unanswered) {
+            const ctx = document.getElementById('result-chart').getContext('2d');
+            if (resultChartInstance) resultChartInstance.destroy();
+
+            resultChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Benar', 'Salah', 'Kosong'],
+                    datasets: [{
+                        data: [correct, wrong, unanswered],
+                        backgroundColor: ['#10b981', '#f43f5e', '#cbd5e1'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        function renderReviewItems(filter) {
+            const container = document.getElementById('review-items-container');
+            if (!container || !appState.activeExam) return;
+
+            container.innerHTML = '';
+
+            appState.activeExam.questions.forEach((q, idx) => {
+                const userAnsIndex = appState.userAnswers[q.id];
+                const isCorrect = userAnsIndex === q.correctIndex;
+                const isUnanswered = userAnsIndex === undefined;
+
+                if (filter === 'WRONG' && isCorrect) return;
+
+                const card = document.createElement('div');
+                card.className = `p-5 rounded-xl border space-y-3 ${
+                    isCorrect ? 'border-emerald-200 bg-emerald-50/30' : 'border-rose-200 bg-rose-50/30'
+                }`;
+
+                let statusBadge = isCorrect 
+                    ? `<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-md"><i class="fa-solid fa-check mr-1"></i> Benar</span>`
+                    : `<span class="px-2.5 py-1 bg-rose-100 text-rose-800 text-xs font-bold rounded-md"><i class="fa-solid fa-xmark mr-1"></i> Salah</span>`;
+
+                if (isUnanswered) {
+                    statusBadge = `<span class="px-2.5 py-1 bg-slate-100 text-slate-700 text-xs font-bold rounded-md">Tidak Dijawab</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-4">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Soal Nomor ${idx + 1}</span>
+                        ${statusBadge}
+                    </div>
+
+                    <p class="font-semibold text-slate-800 text-sm leading-relaxed">${q.text}</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-2">
+                        <div class="p-3 rounded-lg bg-white border border-slate-200">
+                            <span class="block text-slate-400 font-medium mb-1">Jawaban Kamu:</span>
+                            <span class="font-bold ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}">
+                                ${userAnsIndex !== undefined ? q.options[userAnsIndex] : 'Tidak dijawab'}
+                            </span>
+                        </div>
+                        <div class="p-3 rounded-lg bg-white border border-slate-200">
+                            <span class="block text-slate-400 font-medium mb-1">Kunci Jawaban Benar:</span>
+                            <span class="font-bold text-emerald-700">${q.options[q.correctIndex]}</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-3.5 rounded-lg border border-slate-200 text-xs text-slate-700 space-y-1">
+                        <span class="font-bold text-brand-600 block"><i class="fa-solid fa-lightbulb mr-1 text-amber-500"></i> Pembahasan:</span>
+                        <p class="leading-relaxed">${q.explanation}</p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function filterReview(type) {
+            document.querySelectorAll('.review-filter-btn').forEach(btn => {
+                if (btn.dataset.review === type) {
+                    btn.className = "review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white";
+                } else {
+                    btn.className = "review-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600";
+                }
+            });
+            renderReviewItems(type);
+        }
+
+        function retryCurrentExam() {
+            if (appState.activeExam) {
+                startExam(appState.activeExam.id);
+            }
+        }
+
+        // Creator Mode Logic
+        function setupCreatorField() {
+            const list = document.getElementById('creator-questions-list');
+            if (!list) return;
+
+            list.innerHTML = '';
+            addQuestionField(); // initial 1 question
+        }
+
+        let questionFieldCounter = 0;
+        function addQuestionField() {
+            questionFieldCounter++;
+            const list = document.getElementById('creator-questions-list');
+            
+            const card = document.createElement('div');
+            card.className = "p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 relative";
+            card.dataset.qindex = questionFieldCounter;
+
+            card.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-700">Soal #${questionFieldCounter}</span>
+                </div>
+                <textarea required placeholder="Tuliskan pertanyaan soal di sini..." class="new-q-text w-full p-2.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <input type="text" required placeholder="Pilihan A" class="new-opt-0 w-full p-2 bg-white border border-slate-200 rounded-lg">
+                    <input type="text" required placeholder="Pilihan B" class="new-opt-1 w-full p-2 bg-white border border-slate-200 rounded-lg">
+                    <input type="text" required placeholder="Pilihan C" class="new-opt-2 w-full p-2 bg-white border border-slate-200 rounded-lg">
+                    <input type="text" required placeholder="Pilihan D" class="new-opt-3 w-full p-2 bg-white border border-slate-200 rounded-lg">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-1">Kunci Jawaban</label>
+                        <select class="new-correct-idx w-full p-2 bg-white border border-slate-200 rounded-lg">
+                            <option value="0">Pilihan A</option>
+                            <option value="1">Pilihan B</option>
+                            <option value="2">Pilihan C</option>
+                            <option value="3">Pilihan D</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-1">Pembahasan Ringkas</label>
+                        <input type="text" required placeholder="Alasan jawaban benar..." class="new-explanation w-full p-2 bg-white border border-slate-200 rounded-lg">
+                    </div>
+                </div>
+            `;
+            list.appendChild(card);
+        }
+
+        function handleCreateExam(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('new-title').value;
+            const category = document.getElementById('new-category').value;
+            const durationMinutes = parseInt(document.getElementById('new-duration').value) || 15;
+            const price = document.getElementById('new-price').value;
+
+            const qCards = document.querySelectorAll('#creator-questions-list > div');
+            const questions = [];
+
+            qCards.forEach((card, idx) => {
+                const text = card.querySelector('.new-q-text').value;
+                const optA = card.querySelector('.new-opt-0').value;
+                const optB = card.querySelector('.new-opt-1').value;
+                const optC = card.querySelector('.new-opt-2').value;
+                const optD = card.querySelector('.new-opt-3').value;
+                const correctIndex = parseInt(card.querySelector('.new-correct-idx').value);
+                const explanation = card.querySelector('.new-explanation').value;
+
+                questions.push({
+                    id: `q-custom-${Date.now()}-${idx}`,
+                    text: text,
+                    options: [optA, optB, optC, optD],
+                    correctIndex: correctIndex,
+                    explanation: explanation
+                });
+            });
+
+            const newExam = {
+                id: `exam-custom-${Date.now()}`,
+                title: title,
+                category: category,
+                durationMinutes: durationMinutes,
+                price: price,
+                description: `Simulasi tryout mandiri buatan pengguna (${questions.length} Soal).`,
+                questions: questions
+            };
+
+            appState.examsList.unshift(newExam);
+            localStorage.setItem('ujian_pintar_exams', JSON.stringify(appState.examsList));
+
+            renderExamCards();
+            navigateTo('catalog');
+            document.getElementById('create-exam-form').reset();
+            setupCreatorField();
+        }
+
+        function simulatePaymentModal(packageName, priceVal) {
+            document.getElementById('pay-item-name').innerText = packageName;
+            document.getElementById('pay-item-price').innerText = `Rp ${priceVal.toLocaleString('id-ID')}`;
+            document.getElementById('modal-payment').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('modal-payment').classList.add('hidden');
+        }
+
+        function selectPayMethod(method) {
+            document.querySelectorAll('.pay-method-btn').forEach(btn => {
+                btn.className = "pay-method-btn p-3 border rounded-xl text-xs font-semibold text-slate-700 hover:border-brand-500 flex items-center gap-2";
+            });
+            event.currentTarget.className = "pay-method-btn p-3 border rounded-xl text-xs font-semibold text-slate-700 hover:border-brand-500 flex items-center gap-2 border-brand-500 bg-brand-50";
+        }
+
+        function confirmSimulatedPayment() {
+            appState.userTokens += 50;
+            document.getElementById('user-tokens').innerText = appState.userTokens;
+            closePaymentModal();
+            navigateTo('catalog');
+        }
+
+        function simulateSelectPlan(plan) {
+            navigateTo('catalog');
+        }
+    </script>
+</body>
+</html>
